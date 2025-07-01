@@ -1,1 +1,10 @@
-<p>detalle-noticia works!</p>
+<section *ngIf="noticia">
+  <h1>{{ noticia.titulo }}</h1>
+  <p><strong>Autor:</strong> {{ noticia.autor }}</p>
+  <p><strong>Fecha:</strong> {{ noticia.fecha | date:'longDate' }}</p>
+  <p>{{ noticia.contenido }}</p>
+</section>
+
+<section *ngIf="!noticia">
+  <p>La noticia solicitada no existe.</p>
+</section>
