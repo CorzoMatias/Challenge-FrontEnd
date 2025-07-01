@@ -1,0 +1,6 @@
+<div class="tarjeta-noticia">
+  <h2>{{ noticia.titulo }}</h2>
+  <p><strong>Autor:</strong> {{ noticia.autor }}</p>
+  <p><strong>Fecha:</strong> {{ noticia.fecha | date:'longDate' }}</p>
+  <a [routerLink]="['/noticias', noticia.id]">Ver más</a>
+</div>

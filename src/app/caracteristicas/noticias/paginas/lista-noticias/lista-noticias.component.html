@@ -1,1 +1,6 @@
-<p>lista-noticias works!</p>
+<section class="listado-noticias">
+  <app-tarjeta-noticia
+    *ngFor="let noticia of noticias"
+    [noticia]="noticia">
+  </app-tarjeta-noticia>
+</section>
