@@ -1,56 +1,77 @@
 import { Injectable } from '@angular/core';
 import { Noticia } from '../modelos/noticia';
 
-//Se encarga del CRUD en memoria o con localStorage
+const STORAGE_KEY = 'noticias';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class ServicioNoticiasService {
-  private noticiasMock: Noticia[] = [
-    {
-      id: 1,
-      titulo: 'Nueva ley de tecnología',
-      contenido: 'TEST NUMERO 1',
-      autor: 'María',
-      fecha: new Date('2024-10-01'),
-    },
-    {
-      id: 2,
-      titulo: 'Angular 17 lanzado oficialmente',
-      contenido: 'TEST NUMERO 2',
-      autor: 'Carlos',
-      fecha: new Date('2025-01-15'),
-    },
-    {
-      id: 3,
-      titulo: 'ChatGPT revoluciona la programación',
-      contenido: 'TEST NUMERO 3',
-      autor: 'Lucía',
-      fecha: new Date('2025-06-20'),
-    },
-  ];
+  private noticias: Noticia[] = [];
+
+  constructor() {
+    const data = localStorage.getItem(STORAGE_KEY);
+    if (data) {
+      const rawNoticias = JSON.parse(data);
+      this.noticias = rawNoticias.map((n: any) => ({
+        ...n,
+        fecha: new Date(n.fecha)
+      }));
+    } else {
+      this.noticias = [
+        {
+          id: 1,
+          titulo: 'Nueva ley de tecnología',
+          contenido: 'Lorem ipsum...',
+          autor: 'María',
+          fecha: new Date('2024-10-01')
+        },
+        {
+          id: 2,
+          titulo: 'Angular 17 lanzado oficialmente',
+          contenido: 'Lorem ipsum...',
+          autor: 'Carlos',
+          fecha: new Date('2025-01-15')
+        },
+        {
+          id: 3,
+          titulo: 'ChatGPT revoluciona la programación',
+          contenido: 'Lorem ipsum...',
+          autor: 'Lucía',
+          fecha: new Date('2025-06-20')
+        }
+      ];
+      this.guardarEnStorage();
+    }
+  }
+
+  private guardarEnStorage(): void {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(this.noticias));
+  }
 
   public obtenerNoticias(): Noticia[] {
-    return this.noticiasMock;
+    return this.noticias;
   }
 
   public obtenerNoticiaPorId(id: number): Noticia | undefined {
-    return this.noticiasMock.find((noticia) => noticia.id === id);
+    return this.noticias.find(n => n.id === id);
   }
 
   public crearNoticia(nueva: Noticia): void {
-    this.noticiasMock.push(nueva);
+    this.noticias.push(nueva);
+    this.guardarEnStorage();
   }
 
   public actualizarNoticia(actualizada: Noticia): void {
-    const index = this.noticiasMock.findIndex((n) => n.id === actualizada.id);
+    const index = this.noticias.findIndex(n => n.id === actualizada.id);
     if (index !== -1) {
-      this.noticiasMock[index] = actualizada;
+      this.noticias[index] = actualizada;
+      this.guardarEnStorage();
     }
   }
 
   public eliminarNoticia(id: number): void {
-    this.noticiasMock = this.noticiasMock.filter((n) => n.id !== id);
+    this.noticias = this.noticias.filter(n => n.id !== id);
+    this.guardarEnStorage();
   }
 }
