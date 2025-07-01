@@ -1,27 +1,38 @@
-# ProyectoAngular
+# Challenge-FrontEnd
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.17.
+Este repositorio hace alusión al challenge de FrontEnd.
 
-## Development server
+## ProyectoAngular
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Este proyecto fue generado con [Angular CLI](https://github.com/angular/angular-cli) versión 17.3.17.
 
-## Code scaffolding
+---
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Servidor de desarrollo
 
-## Build
+Ejecutá `ng serve` para iniciar un servidor de desarrollo. Luego accedé a `http://localhost:4200/`.  
+La aplicación se recargará automáticamente cuando modifiques los archivos fuente.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## Generación de componentes (scaffolding)
 
-## Running unit tests
+Ejecutá `ng generate component nombre-del-componente` para generar un nuevo componente.  
+También podés usar `ng generate` para crear directivas, pipes, servicios, clases, guards, interfaces, enums o módulos.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Compilar la aplicación
 
-## Running end-to-end tests
+Ejecutá `ng build` para compilar el proyecto.  
+Los archivos compilados se almacenarán en el directorio `dist/`.
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+## Ejecutar pruebas unitarias
 
-## Further help
+Ejecutá `ng test` para correr las pruebas unitarias usando [Karma](https://karma-runner.github.io).
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+## Ejecutar pruebas end-to-end
+
+Ejecutá `ng e2e` para realizar pruebas de extremo a extremo (end-to-end) con una plataforma que elijas.  
+Para usar este comando, necesitás agregar previamente un paquete que implemente estas capacidades.
+
+## Ayuda adicional
+
+Para obtener más ayuda sobre Angular CLI, podés usar el comando `ng help`  
+o visitar la [documentación oficial de Angular CLI](https://angular.io/cli).
