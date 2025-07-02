@@ -1,6 +1,100 @@
-<section class="listado-noticias">
-  <app-tarjeta-noticia
-    *ngFor="let noticia of noticias"
-    [noticia]="noticia">
-  </app-tarjeta-noticia>
-</section>
+<div class="container my-4">
+
+  <!-- Botón Nueva Noticia (opcional, sujeto a prueba) -->
+  <div class="d-flex justify-content-end mb-3">
+    <button class="btn btn-danger" (click)="abrirModalCrear()">Nueva Noticia</button>
+  </div>
+
+  <div class="row gx-4">
+    <!-- Noticia principal -->
+    <div class="col-lg-8 mb-4">
+      <app-tarjeta-noticia
+        [noticia]="noticias[0]"
+        tipo="principal"
+        (verDetalle)="abrirDetalle(noticias[0])">
+      </app-tarjeta-noticia>
+    </div>
+
+    <!-- Noticias secundarias -->
+    <div class="col-lg-4 mb-4 d-flex flex-column gap-3">
+      <div *ngFor="let noticia of noticias.slice(1, 4)">
+        <app-tarjeta-noticia
+          [noticia]="noticia"
+          tipo="secundaria"
+          (verDetalle)="abrirDetalle(noticia)">
+        </app-tarjeta-noticia>
+      </div>
+    </div>
+  </div>
+
+  <!-- Carrusel -->
+  <div class="row mt-4">
+    <div class="col-12">
+      <h5 class="text-danger fw-bold mb-3">Más noticias</h5>
+      <div class="d-flex align-items-center justify-content-center">
+        <span class="carrusel-arrow me-2" (click)="scrollCarrusel('izq')" style="cursor:pointer;">&#9664;</span>
+        <div #carruselContainer class="d-flex overflow-auto gap-3 carrusel-container">
+          <div *ngFor="let noticia of noticias.slice(4)">
+            <app-tarjeta-noticia
+              [noticia]="noticia"
+              tipo="carrusel"
+              (verDetalle)="abrirDetalle(noticia)">
+            </app-tarjeta-noticia>
+          </div>
+        </div>
+        <span class="carrusel-arrow ms-2" (click)="scrollCarrusel('der')" style="cursor:pointer;">&#9654;</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Crear/Editar -->
+  <app-formulario-noticia
+    [visible]="mostrarModal"
+    [noticia]="noticiaEnEdicion"
+    [modoEdicion]="modoEdicion"
+    (cerrar)="cerrarModal()"
+    (guardarNoticia)="onGuardarNoticia($event)">
+  </app-formulario-noticia>
+
+  <!-- Modal Detalle de Noticia -->
+  <div class="modal fade show d-block" tabindex="-1" *ngIf="mostrarDetalle" style="background: rgba(0,0,0,.35); z-index: 1070;">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div>
+            <div class="text-danger text-uppercase fw-bold small mb-1">{{ noticiaDetalle?.subtitulo }}</div>
+            <h4 class="fw-bold">{{ noticiaDetalle?.titulo }}</h4>
+          </div>
+          <button class="btn-close" (click)="cerrarDetalle()" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <img *ngIf="noticiaDetalle?.url" [src]="noticiaDetalle?.url" alt="Imagen noticia" class="img-fluid w-100 mb-3" />
+
+          <div class="mb-2">{{ noticiaDetalle?.descripcion }}</div>
+          <div class="text-muted small mb-2"><strong>Autor:</strong> {{ noticiaDetalle?.autor }}</div>
+          <div class="text-muted small mb-2"><strong>Fecha:</strong> {{ noticiaDetalle?.fecha | date:'dd/MM/yyyy' }}</div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-danger" (click)="eliminarNoticia(noticiaDetalle)">Eliminar</button>
+          <button class="btn btn-primary" (click)="abrirModalEditar(noticiaDetalle)">Editar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notificacion Exito -->
+  <div class="modal fade show d-block" tabindex="-1" *ngIf="mostrarNotificacion" style="background: rgba(0,0,0,.35); z-index: 1070;">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content text-center">
+        <div class="modal-body">
+          <div class="mb-2">
+            <span class="display-4 text-success">&#10003;</span>
+          </div>
+          <div class="fw-bold text-danger">La noticia se {{ notificacionTipo }} exitosamente</div>
+          <div class="mt-2 small">La noticia se {{ notificacionTipo }} corectamente.</div>
+          <button class="btn btn-danger mt-3" (click)="ocultarNotificacion()">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

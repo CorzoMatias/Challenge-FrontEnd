@@ -1,20 +1,44 @@
-<h1 *ngIf="!modoEdicion">Crear Noticia</h1>
-<h1 *ngIf="modoEdicion">Editar Noticia</h1>
-
-<form [formGroup]="formulario" (ngSubmit)="guardar()">
-  <label for="titulo">Título</label>
-  <input id="titulo" type="text" formControlName="titulo" />
-
-  <label for="contenido">Contenido</label>
-  <textarea id="contenido" rows="6" formControlName="contenido"></textarea>
-
-  <label for="autor">Autor</label>
-  <input id="autor" type="text" formControlName="autor" />
-
-  <label for="fecha">Fecha</label>
-  <input id="fecha" type="date" formControlName="fecha" />
-
-  <button type="submit" [disabled]="formulario.invalid">
-    {{ modoEdicion ? 'Guardar cambios' : 'Crear noticia' }}
-  </button>
-</form>
+<div class="modal fade show d-block" tabindex="-1" *ngIf="visible" style="background: rgba(0,0,0,.4); z-index: 1060;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form [formGroup]="formulario" (ngSubmit)="guardar()">
+        <div class="modal-header">
+          <h5 class="modal-title text-danger">{{ modoEdicion ? 'Editar Noticia' : 'Nueva Noticia' }}</h5>
+          <button type="button" class="btn-close" aria-label="Close" (click)="cerrar.emit()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-2">
+            <label class="form-label">Url imagen</label>
+            <input type="text" formControlName="url" class="form-control" required>
+          </div>
+          <div class="mb-2">
+            <label class="form-label">Autor</label>
+            <input type="text" formControlName="autor" class="form-control" required>
+          </div>
+          <div class="mb-2">
+            <label class="form-label">Título</label>
+            <input type="text" formControlName="titulo" class="form-control" required>
+          </div>
+          <div class="mb-2">
+            <label class="form-label">Subtítulo</label>
+            <input type="text" formControlName="subtitulo" class="form-control" required>
+          </div>
+          <div class="mb-2">
+            <label class="form-label">Descripción</label>
+            <textarea formControlName="descripcion" class="form-control" required></textarea>
+          </div>
+          <div class="mb-2">
+            <label class="form-label">Fecha</label>
+            <input type="date" formControlName="fecha" class="form-control" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="cerrar.emit()">Cancelar</button>
+          <button type="submit" class="btn btn-danger" [disabled]="formulario.invalid">
+            {{ modoEdicion ? 'Guardar' : 'Crear' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

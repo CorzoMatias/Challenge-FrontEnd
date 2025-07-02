@@ -1,20 +1,21 @@
-.navbar {
-  background-color: #f4f4f4;
-  padding: 1rem;
+a.btn {
+  color: #dc3545;
+  background-color: #fff;
+  border-color: #fff;
+  font-size: 1rem;
+  padding: 0.25rem 1.25rem;
+  border-radius: 6px;
+  transition: all 0.3s ease;
 
-  ul {
-    list-style: none;
-    display: flex;
-    gap: 1rem;
+  &:hover {
+    background-color: #dc3545;
+    color: #fff;
+    border-color: #fff;
   }
+}
 
-  a {
-    text-decoration: none;
-    color: black;
-    font-weight: bold;
-
-    &.activo {
-      color: darkblue;
-    }
-  }
+.navbar-brand {
+  font-size: 2rem;
+  font-weight: bold;
+  letter-spacing: 1px;
 }

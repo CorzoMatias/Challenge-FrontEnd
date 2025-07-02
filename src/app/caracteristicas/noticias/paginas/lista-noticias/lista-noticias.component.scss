@@ -1,0 +1,33 @@
+:host {
+  display: block;
+
+  .overflow-auto {
+    scrollbar-width: thin;
+    scrollbar-color: #ccc transparent;
+  }
+
+  .overflow-auto::-webkit-scrollbar {
+    height: 8px;
+  }
+
+  .overflow-auto::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 4px;
+  }
+
+  .carrusel-container {
+    min-width: 0;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    padding-bottom: 8px;
+  }
+
+  .carrusel-arrow {
+    font-size: 2.2rem;
+    color: #dc3545;
+    user-select: none;
+    cursor: pointer;
+    line-height: 1;
+    font-weight: bold;
+  }
+}

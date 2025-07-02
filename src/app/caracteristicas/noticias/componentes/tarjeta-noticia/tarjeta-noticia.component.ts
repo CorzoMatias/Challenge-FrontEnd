@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Noticia } from '../../../../core/modelos/noticia';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -12,4 +12,11 @@ import { RouterModule } from '@angular/router';
 })
 export class TarjetaNoticiaComponent {
   @Input() noticia!: Noticia;
+  @Input() tipo: 'principal' | 'secundaria' | 'carrusel' = 'principal';
+
+  @Output() verDetalle = new EventEmitter<void>();
+
+  public abrirDetalle(): void {
+    this.verDetalle.emit();
+  }
 }
