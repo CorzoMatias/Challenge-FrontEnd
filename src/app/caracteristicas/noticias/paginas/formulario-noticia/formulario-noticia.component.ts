@@ -1,19 +1,7 @@
-import {
-  Component,
-  Input,
-  Output,
-  EventEmitter,
-  SimpleChanges,
-  OnChanges,
-} from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  Validators,
-  ReactiveFormsModule,
-} from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { Noticia } from '../../../../core/modelos/noticia';
+import {Component, Input, Output, EventEmitter, SimpleChanges, OnChanges} from '@angular/core';
+import {FormBuilder, FormGroup, Validators, ReactiveFormsModule,} from '@angular/forms';
+import {CommonModule} from '@angular/common';
+import {Noticia} from '../../../../core/modelos/noticia';
 
 @Component({
   selector: 'app-formulario-noticia',
@@ -33,8 +21,15 @@ export class FormularioNoticiaComponent implements OnChanges {
   }>();
 
   formulario!: FormGroup;
+  hoy: string = '';
+  fechaFuturaInvalida = false;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder) {
+    const fechaHoy = new Date();
+    const mes = (fechaHoy.getMonth() + 1).toString().padStart(2, '0');
+    const dia = fechaHoy.getDate().toString().padStart(2, '0');
+    this.hoy = `${fechaHoy.getFullYear()}-${mes}-${dia}`;
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['noticia'] || changes['visible']) {
@@ -58,10 +53,23 @@ export class FormularioNoticiaComponent implements OnChanges {
         Validators.required,
       ],
     });
+    this.fechaFuturaInvalida = false;
+  }
+
+  public validarFechaFutura(): void {
+    const valor = this.formulario.get('fecha')?.value;
+    if (valor) {
+      const fechaIngresada = new Date(valor + 'T00:00:00');
+      const hoy = new Date(this.hoy + 'T00:00:00');
+      this.fechaFuturaInvalida = fechaIngresada > hoy;
+    } else {
+      this.fechaFuturaInvalida = false;
+    }
   }
 
   public guardar(): void {
-    if (this.formulario.invalid) return;
+    this.validarFechaFutura();
+    if (this.formulario.invalid || this.fechaFuturaInvalida) return;
     const valores = this.formulario.value;
     let idReal: number;
     if (this.modoEdicion && this.noticia?.id) {
@@ -73,7 +81,7 @@ export class FormularioNoticiaComponent implements OnChanges {
     const noticiaResult: Noticia = {
       ...this.noticia,
       ...valores,
-      fecha: new Date(valores.fecha),
+      fecha: new Date(valores.fecha + 'T00:00:00'),
       id: idReal,
     };
     this.guardarNoticia.emit({

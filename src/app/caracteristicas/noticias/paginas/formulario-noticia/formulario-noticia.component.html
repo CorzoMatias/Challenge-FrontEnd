@@ -72,16 +72,21 @@
               type="date"
               formControlName="fecha"
               class="form-control"
-              [ngClass]="{'is-invalid': formulario.get('fecha')?.invalid && formulario.get('fecha')?.touched}"
-              required>
+              [ngClass]="{'is-invalid': (formulario.get('fecha')?.invalid && formulario.get('fecha')?.touched) || fechaFuturaInvalida}"
+              [max]="hoy"
+              required
+              (change)="validarFechaFutura()">
             <div *ngIf="formulario.get('fecha')?.invalid && formulario.get('fecha')?.touched" class="invalid-feedback d-block">
               La fecha es obligatoria.
+            </div>
+            <div *ngIf="fechaFuturaInvalida" class="invalid-feedback d-block">
+              No se permite seleccionar una fecha futura. Por favor, elija la fecha actual o una pasada.
             </div>
           </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" (click)="cerrar.emit()">Cancelar</button>
-          <button type="submit" class="btn btn-danger" [disabled]="formulario.invalid">
+          <button type="submit" class="btn btn-danger" [disabled]="formulario.invalid || fechaFuturaInvalida">
             {{ modoEdicion ? 'Guardar' : 'Crear' }}
           </button>
         </div>

@@ -1,9 +1,9 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { TarjetaNoticiaComponent } from '../../componentes/tarjeta-noticia/tarjeta-noticia.component';
-import { FormularioNoticiaComponent } from '../formulario-noticia/formulario-noticia.component';
-import { ServicioNoticiasService } from '../../../../core/servicios/servicio-noticias.service';
-import { Noticia } from '../../../../core/modelos/noticia';
+import {Component, OnInit, ViewChild, ElementRef} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {TarjetaNoticiaComponent} from '../../componentes/tarjeta-noticia/tarjeta-noticia.component';
+import {FormularioNoticiaComponent} from '../formulario-noticia/formulario-noticia.component';
+import {ServicioNoticiasService} from '../../../../core/servicios/servicio-noticias.service';
+import {Noticia} from '../../../../core/modelos/noticia';
 
 @Component({
   selector: 'app-lista-noticias',
