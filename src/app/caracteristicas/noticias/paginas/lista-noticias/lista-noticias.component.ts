@@ -10,11 +10,12 @@ import { Noticia } from '../../../../core/modelos/noticia';
   standalone: true,
   imports: [CommonModule, TarjetaNoticiaComponent, FormularioNoticiaComponent],
   templateUrl: './lista-noticias.component.html',
-  styleUrls: ['./lista-noticias.component.scss']
+  styleUrls: ['./lista-noticias.component.scss'],
 })
 export class ListaNoticiasComponent implements OnInit {
   noticias: Noticia[] = [];
-  @ViewChild('carruselContainer', { static: false }) carruselContainer!: ElementRef<HTMLDivElement>;
+  @ViewChild('carruselContainer', { static: false })
+  carruselContainer!: ElementRef<HTMLDivElement>;
 
   // MODAL Crear/Editar
   mostrarModal = false;
@@ -25,9 +26,16 @@ export class ListaNoticiasComponent implements OnInit {
   mostrarDetalle = false;
   noticiaDetalle: Noticia | null = null;
 
-  // NOTIFICACIÓN
+  // NOTIFICACION
   mostrarNotificacion = false;
-  notificacionTipo = 'creó'; // 'editó', 'eliminó'
+  notificacionTipo = 'creó'; // 'edito', 'elimino'
+
+  // Spinner
+  cargando: boolean = false;
+
+  // MODAL CONFIRMACION ELIMINAR
+  mostrarConfirmEliminar = false;
+  noticiaAEliminar: Noticia | null = null;
 
   constructor(private servicioNoticias: ServicioNoticiasService) {}
 
@@ -36,7 +44,7 @@ export class ListaNoticiasComponent implements OnInit {
   }
 
   // Carrusel
-  scrollCarrusel(direccion: 'izq' | 'der') {
+  public scrollCarrusel(direccion: 'izq' | 'der'): void {
     const container = this.carruselContainer?.nativeElement;
     if (container) {
       const scrollAmount = 250;
@@ -49,63 +57,85 @@ export class ListaNoticiasComponent implements OnInit {
   }
 
   // Modal Crear
-  abrirModalCrear() {
+  public abrirModalCrear(): void {
     this.noticiaEnEdicion = null;
     this.modoEdicion = false;
     this.mostrarModal = true;
   }
 
   // Modal Editar (desde detalle)
-  abrirModalEditar(noticia: Noticia | null) {
+  public abrirModalEditar(noticia: Noticia | null): void {
     this.noticiaEnEdicion = noticia;
     this.modoEdicion = true;
     this.mostrarModal = true;
     this.cerrarDetalle();
   }
 
-  cerrarModal() {
+  public cerrarModal(): void {
     this.mostrarModal = false;
     this.noticiaEnEdicion = null;
     this.modoEdicion = false;
   }
 
   // Modal Detalle
-  abrirDetalle(noticia: Noticia) {
+  public abrirDetalle(noticia: Noticia): void {
     this.noticiaDetalle = noticia;
     this.mostrarDetalle = true;
   }
 
-  cerrarDetalle() {
+  public cerrarDetalle(): void {
     this.mostrarDetalle = false;
     this.noticiaDetalle = null;
   }
 
-  eliminarNoticia(noticia: Noticia | null) {
-    if (noticia && confirm('¿Eliminar esta noticia?')) {
-      this.servicioNoticias.eliminarNoticia(noticia.id);
-      this.noticias = this.servicioNoticias.obtenerNoticias();
-      this.cerrarDetalle();
-      this.notificacionTipo = 'eliminó';
-      this.mostrarNotificacion = true;
+  public eliminarNoticia(noticia: Noticia | null): void {
+    if (noticia) {
+      this.noticiaAEliminar = noticia;
+      this.mostrarConfirmEliminar = true;
+    }
+  }
+
+  public cancelarEliminar(): void {
+    this.mostrarConfirmEliminar = false;
+    this.noticiaAEliminar = null;
+  }
+
+  public confirmarEliminar(): void {
+    if (this.noticiaAEliminar) {
+      this.cargando = true;
+      setTimeout(() => {
+        this.servicioNoticias.eliminarNoticia(this.noticiaAEliminar!.id);
+        this.noticias = this.servicioNoticias.obtenerNoticias();
+        this.cerrarDetalle();
+        this.notificacionTipo = 'eliminó';
+        this.mostrarNotificacion = true;
+        this.mostrarConfirmEliminar = false;
+        this.noticiaAEliminar = null;
+        this.cargando = false;
+      }, 1000);
     }
   }
 
   // Guardar (Crear/Editar)
-  onGuardarNoticia(noticia: Noticia) {
-    if (this.modoEdicion && noticia.id) {
-      this.servicioNoticias.actualizarNoticia(noticia);
+  public onGuardarNoticia(event: { noticia: Noticia, esEdicion: boolean }): void {
+  this.cargando = true;
+  setTimeout(() => {
+    if (event.esEdicion && event.noticia.id) {
+      this.servicioNoticias.actualizarNoticia(event.noticia);
       this.notificacionTipo = 'editó';
     } else {
-      this.servicioNoticias.crearNoticia(noticia);
+      this.servicioNoticias.crearNoticia(event.noticia);
       this.notificacionTipo = 'creó';
     }
     this.noticias = this.servicioNoticias.obtenerNoticias();
     this.cerrarModal();
     this.mostrarNotificacion = true;
-  }
+    this.cargando = false;
+  }, 1000);
+}
 
-  // Notificación de éxito
-  ocultarNotificacion() {
+  // Notificacion de exito
+  public ocultarNotificacion(): void {
     this.mostrarNotificacion = false;
   }
 }

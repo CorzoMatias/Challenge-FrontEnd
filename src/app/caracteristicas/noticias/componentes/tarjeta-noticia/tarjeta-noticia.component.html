@@ -20,7 +20,6 @@
 
     </div>
   </ng-container>
-
   <!-- Secundaria -->
   <ng-container *ngIf="tipo === 'secundaria'">
     <div class="d-flex align-items-center p-2">
@@ -31,11 +30,9 @@
         <div class="text-muted small mb-1"><strong>Autor:</strong> {{ noticia.autor }}</div>
         <div class="text-muted small mb-1"><strong>Fecha:</strong> {{ noticia.fecha | date:'dd/MM/yyyy' }}</div>
         <a (click)="abrirDetalle()" class="btn btn-link px-0 text-danger fw-bold">Ver más</a>
-
       </div>
     </div>
   </ng-container>
-
   <!-- Carrusel -->
   <ng-container *ngIf="tipo === 'carrusel'">
     <div class="p-2 text-center">
@@ -45,7 +42,6 @@
       <div class="text-muted small mb-1"><strong>Autor:</strong> {{ noticia.autor }}</div>
       <div class="text-muted small mb-1"><strong>Fecha:</strong> {{ noticia.fecha | date:'dd/MM/yyyy' }}</div>
       <a (click)="abrirDetalle()" class="btn btn-link px-0 text-danger fw-bold">Ver más</a>
-
     </div>
   </ng-container>
 </div>
